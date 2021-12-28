@@ -1,6 +1,7 @@
 package sanchez.jose.editor;
 
 import javax.swing.*;
+import java.awt.event.*;
 
 public class Principal {
 	public static void main(String [] args) {
@@ -75,7 +76,6 @@ class Panel extends JPanel{
 		
 		//----------------------------------------------------
 		
-		creaPanel();
 		
 		add(panelMenu);
 		add(tPane);
@@ -86,6 +86,15 @@ class Panel extends JPanel{
 		
 		if(menu.equals("archivo")) {
 			archivo.add(elementoItem);
+			if(accion.equals("nuevo")) {
+				elementoItem.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						creaPanel();
+					}
+				});
+			}
 		}
 		else if(menu.equals("editar")) {
 			editar.add(elementoItem);
