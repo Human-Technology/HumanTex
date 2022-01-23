@@ -196,7 +196,7 @@ class Panel extends JPanel{
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						//Guardar como si el Archivo no existe 
+						//Guardar Como si el archivo no existe 
 						if(listFile.get(tPane.getSelectedIndex()).getPath().equals("")) {
 							JFileChooser guardarArchivos = new JFileChooser();
 							int opc = guardarArchivos.showSaveDialog(null);
@@ -209,13 +209,13 @@ class Panel extends JPanel{
 								try {
 									FileWriter fw = new FileWriter(listFile.get(tPane.getSelectedIndex()).getPath());
 									String texto = listAreaTexto.get(tPane.getSelectedIndex()).getText();
-									
 
 									for(int i = 0; i<texto.length(); i++) {
 										fw.write(texto.charAt(i));
 									}
 									
 									fw.close();
+									
 									
 								} catch (IOException e1) {
 									// TODO Auto-generated catch block
@@ -229,7 +229,6 @@ class Panel extends JPanel{
 							try {
 								FileWriter fw = new FileWriter(listFile.get(tPane.getSelectedIndex()).getPath());
 								String texto = listAreaTexto.get(tPane.getSelectedIndex()).getText();
-								
 
 								for(int i = 0; i<texto.length(); i++) {
 									fw.write(texto.charAt(i));
@@ -237,11 +236,47 @@ class Panel extends JPanel{
 								
 								fw.close();
 								
+								
 							} catch (IOException e1) {
 								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
+					}
+					
+				});
+			}
+			else if(accion.equals("guardarComo")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						JFileChooser guardarArchivos = new JFileChooser();
+						int opc = guardarArchivos.showSaveDialog(null);
+						
+						if(opc == JFileChooser.APPROVE_OPTION) {
+							File archivo = guardarArchivos.getSelectedFile();
+							listFile.set(tPane.getSelectedIndex(), archivo);
+							tPane.setTitleAt(tPane.getSelectedIndex(), archivo.getName());
+							
+							try {
+								FileWriter fw = new FileWriter(listFile.get(tPane.getSelectedIndex()).getPath());
+								String texto = listAreaTexto.get(tPane.getSelectedIndex()).getText();
+
+								for(int i = 0; i<texto.length(); i++) {
+									fw.write(texto.charAt(i));
+								}
+								
+								fw.close();
+								
+								
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						}
+						
 						
 					}
 					
