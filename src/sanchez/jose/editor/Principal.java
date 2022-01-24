@@ -1,6 +1,11 @@
 package sanchez.jose.editor;
 
 import javax.swing.*;
+import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.DefaultEditorKit.CopyAction;
+import javax.swing.text.DefaultEditorKit.CutAction;
+import javax.swing.undo.UndoManager;
+
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,12 +59,12 @@ class Panel extends JPanel{
 		//--------------------------------------------------------
 		
 		//------------------ ELEMENTOS DEL MENU EDITAR ----------------
-		creaItem("Deshacer", "editar", "");
-		creaItem("Rehacer", "editar", "");
+		creaItem("Deshacer", "editar", "deshacer");
+		creaItem("Rehacer", "editar", "rehacer");
 		editar.addSeparator();
-		creaItem("Cortar", "editar", "");
-		creaItem("Copiar", "editar", "");
-		creaItem("Pegar", "editar", "");
+		creaItem("Cortar", "editar", "cortar");
+		creaItem("Copiar", "editar", "copiar");
+		creaItem("Pegar", "editar", "pegar");
 		//-------------------------------------------------------------
 		
 		//----------------- ELEMENTOS DEL MENU SELECCION ---------------
@@ -84,6 +89,7 @@ class Panel extends JPanel{
 		listFile = new ArrayList<File>();
 		listAreaTexto = new ArrayList<JTextPane>();
 		listScroll = new ArrayList<JScrollPane>();
+		listManager = new ArrayList<UndoManager>();
 		
 		//----------------------------------------------------
 		
@@ -285,6 +291,37 @@ class Panel extends JPanel{
 		}
 		else if(menu.equals("editar")) {
 			editar.add(elementoItem);
+			if(accion.equals("deshacer")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						if(listManager.get(tPane.getSelectedIndex()).canUndo()) listManager.get(tPane.getSelectedIndex()).undo();
+					}
+				});
+			}
+			else if(accion.equals("rehacer")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						if(listManager.get(tPane.getSelectedIndex()).canRedo()) listManager.get(tPane.getSelectedIndex()).redo();
+					}
+					
+				});
+			}
+			else if(accion.equals("cortar")) {
+				elementoItem.addActionListener(new DefaultEditorKit.CutAction());
+			}
+			else if(accion.equals("copiar")) {
+				elementoItem.addActionListener(new DefaultEditorKit.CopyAction());
+			}
+			else if(accion.equals("pegar")) {
+				elementoItem.addActionListener(new DefaultEditorKit.PasteAction());
+			}
+			
 		}
 		else if(menu.equals("seleccion")) {
 			seleccion.add(elementoItem);
@@ -304,6 +341,9 @@ class Panel extends JPanel{
 		listFile.add(new File(""));
 		listAreaTexto.add(new JTextPane());
 		listScroll.add(new JScrollPane(listAreaTexto.get(contadorPanel)));
+		listManager.add(new UndoManager()); //Para rastrear los cambios del Area de texto
+		
+		listAreaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listManager.get(contadorPanel));
 		
 		ventana.add(listScroll.get(contadorPanel));
 		
@@ -320,6 +360,7 @@ class Panel extends JPanel{
 	//private JTextPane areaTexto;
 	private ArrayList<JTextPane> listAreaTexto;
 	private ArrayList<JScrollPane> listScroll;
+	private ArrayList<UndoManager> listManager;
 	private ArrayList<File> listFile;
 	private JMenuBar menu;
 	private JMenu archivo, editar, seleccion, ver, apariencia;
