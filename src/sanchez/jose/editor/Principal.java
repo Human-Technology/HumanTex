@@ -72,7 +72,7 @@ class Panel extends JPanel{
 		//--------------------------------------------------------------
 		
 		//------------------- ELEMENTOS DEL MENU VER -------------------
-		creaItem("Numeracion", "ver", "");
+		creaItem("Numeracion", "ver", "numeracion");
 		ver.add(apariencia);
 		creaItem("Normal", "apariencia", "");
 		creaItem("Dark", "apariencia", "");
@@ -325,18 +325,33 @@ class Panel extends JPanel{
 		}
 		else if(menu.equals("seleccion")) {
 			seleccion.add(elementoItem);
-			elementoItem.addActionListener(new ActionListener() {
+			if(accion.equals("seleccion")) {
+				elementoItem.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					listAreaTexto.get(tPane.getSelectedIndex()).selectAll();
-				}
-				
-			});
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						listAreaTexto.get(tPane.getSelectedIndex()).selectAll();
+					}
+					
+				});
+			}
+
 		}
 		else if(menu.equals("ver")) {
 			ver.add(elementoItem);
+			if(accion.equals("numeracion")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						numeracion = !numeracion;
+						
+						Utilidades.viewNumeracion(contadorPanel, numeracion, listAreaTexto, listScroll);
+					}
+				});
+			}
 		}
 		else if(menu.equals("apariencia")) {
 			apariencia.add(elementoItem);
@@ -357,11 +372,14 @@ class Panel extends JPanel{
 		ventana.add(listScroll.get(contadorPanel));
 		
 		tPane.addTab("title",ventana);
+		
+		Utilidades.viewNumeroInicio(contadorPanel, numeracion, listAreaTexto.get(contadorPanel), listScroll.get(contadorPanel));
 		tPane.setSelectedIndex(contadorPanel);
 		contadorPanel++;
 		existePanel = true;
 	}
 	
+	private boolean numeracion = false;
 	private int contadorPanel = 0; //Nos va a contar cuantos paneles se han creado
 	private boolean existePanel = false; // nos va a decir si inicialmente existe un panel creado
 	private JTabbedPane tPane;
