@@ -74,8 +74,8 @@ class Panel extends JPanel{
 		//------------------- ELEMENTOS DEL MENU VER -------------------
 		creaItem("Numeracion", "ver", "numeracion");
 		ver.add(apariencia);
-		creaItem("Normal", "apariencia", "");
-		creaItem("Dark", "apariencia", "");
+		creaItem("Normal", "apariencia", "normal");
+		creaItem("Dark", "apariencia", "dark");
 		//--------------------------------------------------------------
 		
 		
@@ -152,6 +152,7 @@ class Panel extends JPanel{
 										if(linea !=null) Utilidades.append(linea+"\n", listAreaTexto.get(tPane.getSelectedIndex()));
 										
 									}
+									Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
 								}else {
 									//si la ruta del fichero ya existe y esta abierto
 									//vamos a recorrer todos los paneles para ver cual es el que tiene el path del
@@ -325,6 +326,7 @@ class Panel extends JPanel{
 		}
 		else if(menu.equals("seleccion")) {
 			seleccion.add(elementoItem);
+
 			if(accion.equals("seleccion")) {
 				elementoItem.addActionListener(new ActionListener() {
 
@@ -333,7 +335,7 @@ class Panel extends JPanel{
 						// TODO Auto-generated method stub
 						listAreaTexto.get(tPane.getSelectedIndex()).selectAll();
 					}
-					
+
 				});
 			}
 
@@ -345,18 +347,47 @@ class Panel extends JPanel{
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
 						
 						numeracion = !numeracion;
 						
 						Utilidades.viewNumeracion(contadorPanel, numeracion, listAreaTexto, listScroll);
 					}
+					
 				});
 			}
 		}
 		else if(menu.equals("apariencia")) {
 			apariencia.add(elementoItem);
-		}
-		
+			
+			if(accion.equals("normal")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						tipoFondo="w";
+						
+						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+					}
+					
+				});
+			}
+			else if(accion.equals("dark")) {
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						tipoFondo = "d";
+						
+						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+					}
+					
+				});
+			}
+			
+		}	
 	}
 	
 	public void creaPanel() {
@@ -373,12 +404,14 @@ class Panel extends JPanel{
 		
 		tPane.addTab("title",ventana);
 		
-		Utilidades.viewNumeroInicio(contadorPanel, numeracion, listAreaTexto.get(contadorPanel), listScroll.get(contadorPanel));
+		
+		Utilidades.viewNumeracionInicio(numeracion, listAreaTexto.get(contadorPanel), listScroll.get(contadorPanel));
 		tPane.setSelectedIndex(contadorPanel);
 		contadorPanel++;
+		Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
 		existePanel = true;
 	}
-	
+	private static String tipoFondo = "w";
 	private boolean numeracion = false;
 	private int contadorPanel = 0; //Nos va a contar cuantos paneles se han creado
 	private boolean existePanel = false; // nos va a decir si inicialmente existe un panel creado
