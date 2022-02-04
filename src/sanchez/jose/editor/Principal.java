@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class Principal {
@@ -93,9 +94,51 @@ class Panel extends JPanel{
 		
 		//----------------------------------------------------
 		
+		//--------------- Barra de Herramientas ------------------
+		
+		herramientas = new JToolBar(JToolBar.VERTICAL);
+		url = Principal.class.getResource("/sanchez/jose/img/marca-x.png");
+		Utilidades.addButton(url, herramientas, "Cerrar Pestaña Acrual").addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int seleccion = tPane.getSelectedIndex();
+				if(seleccion != -1) {
+					//Si existen pestañas abiertas eliminamos la pestaña que tengamos seleccionada
+					listScroll.get(tPane.getSelectedIndex()).setRowHeader(null);
+					tPane.remove(seleccion);
+					listAreaTexto.remove(seleccion);
+					listScroll.remove(seleccion);
+					listManager.remove(seleccion);
+					listFile.remove(seleccion);
+					
+					contadorPanel--;
+					
+					if(tPane.getSelectedIndex() == -1) {
+						existePanel = false; //Si tPane retorna -1 quiere decir que no exiten paneles creados
+					}
+				}
+			}
+			
+		});
+		
+		url = Principal.class.getResource("/sanchez/jose/img/mas (1).png");
+		Utilidades.addButton(url, herramientas, "Nuevo Archivo").addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				creaPanel();
+			}
+			
+		});
+		
+		//--------------------------------------------------------
 		
 		add(panelMenu);
 		add(tPane);
+		add(herramientas);
 	}
 	
 	public void creaItem(String rotulo, String menu, String accion) {
@@ -425,6 +468,8 @@ class Panel extends JPanel{
 	private JMenuBar menu;
 	private JMenu archivo, editar, seleccion, ver, apariencia;
 	private JMenuItem elementoItem;
+	private JToolBar herramientas;
+	private URL url;
 }
 
 

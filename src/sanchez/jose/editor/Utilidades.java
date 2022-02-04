@@ -3,6 +3,12 @@ package sanchez.jose.editor;
 
 import java.util.ArrayList;
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Image;
+import java.net.URL;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -88,6 +94,17 @@ public class Utilidades {
 				list.get(i).setBackground(new Color(32, 33, 36));
 			}
 		}
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	
+	//------------- Button---------------------------------------------------------
+	public static JButton addButton(URL url, Object objContenedor, String rotulo) {
+		JButton button = new JButton(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+		button.setToolTipText(rotulo);
+		((Container) objContenedor).add(button);
+		return button;
 	}
 	
 	//-----------------------------------------------------------------------------
