@@ -6,6 +6,9 @@ import javax.swing.text.DefaultEditorKit.CopyAction;
 import javax.swing.text.DefaultEditorKit.CutAction;
 import javax.swing.undo.UndoManager;
 
+import java.awt.Color;
+import java.awt.BorderLayout;
+
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,9 +39,12 @@ class Marco extends JFrame{
 
 class Panel extends JPanel{
 	public Panel() {
+		setLayout(new BorderLayout());
+		
 		//----------- Menu ------------------------------------
 		JPanel panelMenu = new JPanel();
 		
+		panelMenu.setLayout(new BorderLayout());
 		menu = new JMenuBar();
 		archivo = new JMenu("Archivo");
 		editar = new JMenu("Editar");
@@ -80,7 +86,7 @@ class Panel extends JPanel{
 		//--------------------------------------------------------------
 		
 		
-		panelMenu.add(menu);
+		panelMenu.add(menu, BorderLayout.NORTH);
 		//-----------------------------------------------------
 		
 		
@@ -136,9 +142,9 @@ class Panel extends JPanel{
 		
 		//--------------------------------------------------------
 		
-		add(panelMenu);
-		add(tPane);
-		add(herramientas);
+		add(panelMenu, BorderLayout.NORTH);
+		add(tPane, BorderLayout.CENTER);
+		add(herramientas, BorderLayout.WEST);
 	}
 	
 	public void creaItem(String rotulo, String menu, String accion) {
@@ -435,7 +441,7 @@ class Panel extends JPanel{
 	
 	public void creaPanel() {
 		ventana = new JPanel();
-		
+		ventana.setLayout(new BorderLayout());
 		listFile.add(new File(""));
 		listAreaTexto.add(new JTextPane());
 		listScroll.add(new JScrollPane(listAreaTexto.get(contadorPanel)));
@@ -443,7 +449,7 @@ class Panel extends JPanel{
 		
 		listAreaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listManager.get(contadorPanel));
 		
-		ventana.add(listScroll.get(contadorPanel));
+		ventana.add(listScroll.get(contadorPanel), BorderLayout.CENTER);
 		
 		tPane.addTab("title",ventana);
 		
