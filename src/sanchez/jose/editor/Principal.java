@@ -142,9 +142,22 @@ class Panel extends JPanel{
 		
 		//--------------------------------------------------------
 		
+		// ------------------------- Panel Extra --------------------------------
+		panelExtra = new JPanel();
+		panelExtra.setLayout(new BorderLayout());
+		
+		JPanel panelIzquierdo = new JPanel();
+		
+		JPanel panelCentro = new JPanel();
+		
+		panelExtra.add(panelIzquierdo, BorderLayout.WEST);
+		panelExtra.add(panelCentro,BorderLayout.CENTER);
+		//------------------------------------------------------------------------
+		
 		add(panelMenu, BorderLayout.NORTH);
 		add(tPane, BorderLayout.CENTER);
 		add(herramientas, BorderLayout.WEST);
+		add(panelExtra, BorderLayout.SOUTH);
 	}
 	
 	public void creaItem(String rotulo, String menu, String accion) {
@@ -466,6 +479,7 @@ class Panel extends JPanel{
 	private boolean existePanel = false; // nos va a decir si inicialmente existe un panel creado
 	private JTabbedPane tPane;
 	private JPanel ventana;
+	private JPanel panelExtra;
 	//private JTextPane areaTexto;
 	private ArrayList<JTextPane> listAreaTexto;
 	private ArrayList<JScrollPane> listScroll;
