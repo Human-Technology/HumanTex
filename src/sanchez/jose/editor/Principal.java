@@ -7,6 +7,7 @@ import javax.swing.text.DefaultEditorKit.CutAction;
 import javax.swing.undo.UndoManager;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.BorderLayout;
 
 import java.awt.event.*;
@@ -18,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+
 
 public class Principal {
 	public static void main(String [] args) {
@@ -32,13 +34,13 @@ class Marco extends JFrame{
 	public Marco() {
 		setBounds(300,300,300,300);
 		setTitle("HumanTex");
-		add(new Panel());
+		add(new Panel(this));
 	}
 }
 
 
 class Panel extends JPanel{
-	public Panel() {
+	public Panel(JFrame marco) {
 		setLayout(new BorderLayout());
 		
 		//----------- Menu ------------------------------------
@@ -147,8 +149,39 @@ class Panel extends JPanel{
 		panelExtra.setLayout(new BorderLayout());
 		
 		JPanel panelIzquierdo = new JPanel();
+		labelAlfiler = new JLabel();
+		url = Principal.class.getResource("/sanchez/jose/img/alfiler.png");
+		labelAlfiler.setIcon(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+		labelAlfiler.addMouseListener(new MouseAdapter() {
+			//al pasar el cursor por encima del alfiler cambia a esta imagen
+			public void mouseEntered(MouseEvent e) {
+				url = Principal.class.getResource("/sanchez/jose/img/alfilerseleccion.png");
+				labelAlfiler.setIcon(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+			}
+			
+			//si estadoAncla es verdadero cambia la imagen del jlabel si es false tambien la cambia por otra imagen
+			public void mouseExited(MouseEvent e) {
+				if(estadoAlfiler) {
+					url = Principal.class.getResource("/sanchez/jose/img/alfilerseleccion.png");
+					labelAlfiler.setIcon(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+				}else {
+					url = Principal.class.getResource("/sanchez/jose/img/alfiler.png");
+					labelAlfiler.setIcon(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
+				}
+			}
+			
+			//al dar click sobre el jLabel invertimos el valor de estadoAncla y se lo pasamos a setAlwaysOnTop que nos permite mantener la ventana por encima de todo
+			public void mousePressed(MouseEvent e) {
+				estadoAlfiler = !estadoAlfiler;
+				marco.setAlwaysOnTop(estadoAlfiler);
+			}
+		});
+		
+		panelIzquierdo.add(labelAlfiler);
+		
 		
 		JPanel panelCentro = new JPanel();
+		
 		
 		panelExtra.add(panelIzquierdo, BorderLayout.WEST);
 		panelExtra.add(panelCentro,BorderLayout.CENTER);
@@ -490,6 +523,9 @@ class Panel extends JPanel{
 	private JMenuItem elementoItem;
 	private JToolBar herramientas;
 	private URL url;
+	
+	private boolean estadoAlfiler=false;
+	private JLabel labelAlfiler;
 }
 
 
