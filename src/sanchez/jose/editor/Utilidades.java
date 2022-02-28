@@ -57,7 +57,7 @@ public class Utilidades {
 	
 	// ------------------------- Apariencia ---------------------------------------
 	
-	public static void aFondo(int contador, String tipo, ArrayList<JTextPane> list) {
+	public static void aFondo(int contador, String tipo, int tamano,ArrayList<JTextPane> list) {
 		if(tipo.equals("w")) {
 			for(int i = 0; i<contador; i++) {
 				
@@ -71,6 +71,8 @@ public class Utilidades {
 				//Para el Tipo de Texto
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
 				
+				//Para el tamaño del texto
+				aset = sc.addAttribute(aset, StyleConstants.FontSize, tamano);
 				
 				list.get(i).setCharacterAttributes(aset, false);
 				list.get(i).setBackground(Color.WHITE);
@@ -89,6 +91,9 @@ public class Utilidades {
 
 				// Para el Tipo de Texto
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
+				
+				//Para el tamaño del texto
+				aset = sc.addAttribute(aset, StyleConstants.FontSize, tamano);
 
 				list.get(i).setCharacterAttributes(aset, false);
 				list.get(i).setBackground(new Color(32, 33, 36));
@@ -105,6 +110,24 @@ public class Utilidades {
 		button.setToolTipText(rotulo);
 		((Container) objContenedor).add(button);
 		return button;
+	}
+	
+	//-----------------------------------------------------------------------------
+	
+	//-------------------------- Tamaño Texto --------------------------------------
+	public static void tamTexto(int tamano, int contador, ArrayList<JTextPane> list) {
+		for(int i=0; i<contador; i++) {
+			//Seleccionamos todo el texto del area de texto
+			list.get(i).selectAll();
+			
+			StyleContext sc = StyleContext.getDefaultStyleContext();
+			
+			//Para cambiar el tamaño del texto
+			AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.FontSize, tamano);
+			
+			//aplica el tamaño del texto en el area de texto
+			list.get(i).setCharacterAttributes(aset, false);
+		}
 	}
 	
 	//-----------------------------------------------------------------------------

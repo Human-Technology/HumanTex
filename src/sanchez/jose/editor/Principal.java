@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
 
 public class Principal {
 	public static void main(String [] args) {
@@ -179,8 +183,22 @@ class Panel extends JPanel{
 		
 		panelIzquierdo.add(labelAlfiler);
 		
-		
 		JPanel panelCentro = new JPanel();
+		slider = new JSlider(8,38,14);
+		slider.setMajorTickSpacing(6); //La separacion entre las barritas grandes sera de 12 en 12
+		slider.setMinorTickSpacing(2); //Indica que la separacion entre las barras pequeñas es de 2
+		//slider.setPaintTicks(true);
+		slider.setPaintLabels(true);
+		
+		slider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				// TODO Auto-generated method stub
+				Utilidades.tamTexto(slider.getValue(), contadorPanel, listAreaTexto);
+			}
+		});
+		
+		panelCentro.add(slider);
 		
 		
 		panelExtra.add(panelIzquierdo, BorderLayout.WEST);
@@ -247,7 +265,7 @@ class Panel extends JPanel{
 										if(linea !=null) Utilidades.append(linea+"\n", listAreaTexto.get(tPane.getSelectedIndex()));
 										
 									}
-									Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+									Utilidades.aFondo(contadorPanel, tipoFondo, slider.getValue(), listAreaTexto);
 								}else {
 									//si la ruta del fichero ya existe y esta abierto
 									//vamos a recorrer todos los paneles para ver cual es el que tiene el path del
@@ -463,7 +481,7 @@ class Panel extends JPanel{
 						// TODO Auto-generated method stub
 						tipoFondo="w";
 						
-						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, slider.getValue(), listAreaTexto);
 					}
 					
 				});
@@ -476,7 +494,7 @@ class Panel extends JPanel{
 						// TODO Auto-generated method stub
 						tipoFondo = "d";
 						
-						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+						if(tPane.getTabCount() > 0) Utilidades.aFondo(contadorPanel, tipoFondo, slider.getValue(), listAreaTexto);
 					}
 					
 				});
@@ -503,7 +521,7 @@ class Panel extends JPanel{
 		Utilidades.viewNumeracionInicio(numeracion, listAreaTexto.get(contadorPanel), listScroll.get(contadorPanel));
 		tPane.setSelectedIndex(contadorPanel);
 		contadorPanel++;
-		Utilidades.aFondo(contadorPanel, tipoFondo, listAreaTexto);
+		Utilidades.aFondo(contadorPanel, tipoFondo,slider.getValue(), listAreaTexto);
 		existePanel = true;
 	}
 	private static String tipoFondo = "w";
@@ -524,8 +542,10 @@ class Panel extends JPanel{
 	private JToolBar herramientas;
 	private URL url;
 	
+	
 	private boolean estadoAlfiler=false;
 	private JLabel labelAlfiler;
+	private JSlider slider;
 }
 
 
