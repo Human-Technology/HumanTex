@@ -200,10 +200,28 @@ class Panel extends JPanel{
 		
 		panelCentro.add(slider);
 		
-		
 		panelExtra.add(panelIzquierdo, BorderLayout.WEST);
 		panelExtra.add(panelCentro,BorderLayout.CENTER);
 		//------------------------------------------------------------------------
+		
+		//------------------ Menu Emergente --------------------------------------
+		menuEmergente = new JPopupMenu();
+		
+		JMenuItem cortar = new JMenuItem("Cortar");
+		JMenuItem copiar = new JMenuItem("Copiar");
+		JMenuItem pegar = new JMenuItem("Pegar");
+		
+		cortar.addActionListener(new DefaultEditorKit.CutAction());
+		copiar.addActionListener(new DefaultEditorKit.CopyAction());
+		pegar.addActionListener(new DefaultEditorKit.PasteAction());
+		
+		menuEmergente.add(cortar);
+		menuEmergente.add(copiar);
+		menuEmergente.add(pegar);
+		
+		//------------------------------------------------------------------------
+		
+		panelExtra.setComponentPopupMenu(menuEmergente);
 		
 		add(panelMenu, BorderLayout.NORTH);
 		add(tPane, BorderLayout.CENTER);
@@ -513,6 +531,8 @@ class Panel extends JPanel{
 		
 		listAreaTexto.get(contadorPanel).getDocument().addUndoableEditListener(listManager.get(contadorPanel));
 		
+		listAreaTexto.get(contadorPanel).setComponentPopupMenu(menuEmergente);
+		
 		ventana.add(listScroll.get(contadorPanel), BorderLayout.CENTER);
 		
 		tPane.addTab("title",ventana);
@@ -542,10 +562,11 @@ class Panel extends JPanel{
 	private JToolBar herramientas;
 	private URL url;
 	
-	
 	private boolean estadoAlfiler=false;
 	private JLabel labelAlfiler;
 	private JSlider slider;
+	
+	private JPopupMenu menuEmergente;
 }
 
 
