@@ -36,7 +36,7 @@ public class Principal {
 
 class Marco extends JFrame{
 	public Marco() {
-		setBounds(300,300,300,300);
+		setBounds(300,300,600,600);
 		setTitle("HumanTex");
 		add(new Panel(this));
 	}
@@ -49,6 +49,7 @@ class Panel extends JPanel{
 		
 		//----------- Menu ------------------------------------
 		JPanel panelMenu = new JPanel();
+		items = new JMenuItem[8];
 		
 		panelMenu.setLayout(new BorderLayout());
 		menu = new JMenuBar();
@@ -104,13 +105,15 @@ class Panel extends JPanel{
 		listScroll = new ArrayList<JScrollPane>();
 		listManager = new ArrayList<UndoManager>();
 		
+		Utilidades.desactivaItem(items);
+		
 		//----------------------------------------------------
 		
 		//--------------- Barra de Herramientas ------------------
 		
 		herramientas = new JToolBar(JToolBar.VERTICAL);
 		url = Principal.class.getResource("/sanchez/jose/img/marca-x.png");
-		Utilidades.addButton(url, herramientas, "Cerrar Pestaña Acrual").addActionListener(new ActionListener() {
+		Utilidades.addButton(url, herramientas, "Cerrar Pestaña Actual").addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -129,6 +132,7 @@ class Panel extends JPanel{
 					
 					if(tPane.getSelectedIndex() == -1) {
 						existePanel = false; //Si tPane retorna -1 quiere decir que no exiten paneles creados
+						Utilidades.desactivaItem(items);
 					}
 				}
 			}
@@ -142,6 +146,7 @@ class Panel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				creaPanel();
+				if(existePanel) Utilidades.activaItems(items);
 			}
 			
 		});
@@ -220,9 +225,7 @@ class Panel extends JPanel{
 		menuEmergente.add(pegar);
 		
 		//------------------------------------------------------------------------
-		
-		panelExtra.setComponentPopupMenu(menuEmergente);
-		
+				
 		add(panelMenu, BorderLayout.NORTH);
 		add(tPane, BorderLayout.CENTER);
 		add(herramientas, BorderLayout.WEST);
@@ -240,6 +243,7 @@ class Panel extends JPanel{
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						creaPanel();
+						if(existePanel) Utilidades.activaItems(items);
 					}
 				});
 			}
@@ -250,11 +254,13 @@ class Panel extends JPanel{
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						creaPanel();
+						
 						JFileChooser selectorArchivos = new JFileChooser();
 						selectorArchivos.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 						int resultado = selectorArchivos.showOpenDialog(listAreaTexto.get(tPane.getSelectedIndex()));
 						
 						if (resultado == JFileChooser.APPROVE_OPTION) {
+							if(existePanel) Utilidades.activaItems(items);
 							try {
 								boolean existePath = false;
 								for (int i = 0; i < tPane.getTabCount(); i++) {
@@ -330,6 +336,7 @@ class Panel extends JPanel{
 				});
 			}
 			else if(accion.equals("guardar")) {
+				items[0] = elementoItem;
 				elementoItem.addActionListener(new ActionListener() {
 
 					@Override
@@ -385,6 +392,7 @@ class Panel extends JPanel{
 				});
 			}
 			else if(accion.equals("guardarComo")) {
+				items[1] = elementoItem;
 				elementoItem.addActionListener(new ActionListener() {
 
 					@Override
@@ -424,6 +432,7 @@ class Panel extends JPanel{
 		else if(menu.equals("editar")) {
 			editar.add(elementoItem);
 			if(accion.equals("deshacer")) {
+				items[2]=elementoItem;
 				elementoItem.addActionListener(new ActionListener() {
 
 					@Override
@@ -434,6 +443,7 @@ class Panel extends JPanel{
 				});
 			}
 			else if(accion.equals("rehacer")) {
+				items[3]=elementoItem;
 				elementoItem.addActionListener(new ActionListener() {
 
 					@Override
@@ -445,12 +455,15 @@ class Panel extends JPanel{
 				});
 			}
 			else if(accion.equals("cortar")) {
+				items[4]=elementoItem;
 				elementoItem.addActionListener(new DefaultEditorKit.CutAction());
 			}
 			else if(accion.equals("copiar")) {
+				items[5] = elementoItem;
 				elementoItem.addActionListener(new DefaultEditorKit.CopyAction());
 			}
 			else if(accion.equals("pegar")) {
+				items[6] = elementoItem;
 				elementoItem.addActionListener(new DefaultEditorKit.PasteAction());
 			}
 			
@@ -459,6 +472,7 @@ class Panel extends JPanel{
 			seleccion.add(elementoItem);
 
 			if(accion.equals("seleccion")) {
+				items[7] = elementoItem;
 				elementoItem.addActionListener(new ActionListener() {
 
 					@Override
@@ -567,6 +581,7 @@ class Panel extends JPanel{
 	private JSlider slider;
 	
 	private JPopupMenu menuEmergente;
+	private JMenuItem items[];
 }
 
 

@@ -9,6 +9,7 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.AttributeSet;
@@ -130,6 +131,22 @@ public class Utilidades {
 		}
 	}
 	
+	
 	//-----------------------------------------------------------------------------
+	
+	//---------------------------- Metodos Bloqueo y desbloqueo Items -----------------------
+	
+	public static void activaItems(JMenuItem j[]) {
+		for(JMenuItem item : j) {
+			item.setEnabled(true);
+		}
+	}
+	
+	public static void desactivaItem(JMenuItem j[]) {
+		for(JMenuItem item : j) {
+			item.setEnabled(false);
+		}
+	}	
+	//----------------------------------------------------------------------------------------
 	
 }
